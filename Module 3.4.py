@@ -1,0 +1,22 @@
+# Задача "Однокоренные":
+
+def single_root_words(root_word, *other_words):
+    same_words = []
+    for word in other_words:
+
+        # одинаковые слова складываем в один список
+        if root_word in word or word in root_word:
+            same_words.append(word)
+
+        # независимо от регистра добавляем в один список
+        elif root_word.lower() in word.lower() or word.lower() in root_word.lower():
+            same_words.append(word)
+
+    return same_words
+
+
+result1 = single_root_words('rich', 'richiest', 'orichalcum', 'cheers', 'richies')
+result2 = single_root_words('Disablement', 'Able', 'Mable', 'Disable', 'Bagel')
+
+print(result1)
+print(result2)
