@@ -3,24 +3,24 @@ import time
 
 
 class Knight(threading.Thread):
-    total_enemies = 100  # Общее количество врагов
-
     def __init__(self, name, power):
         super().__init__()
         self.name = name
         self.power = power
+        self.days = 0
+        self.total_enemies = 100  # У каждого рыцаря свои 100 врагов
 
     def run(self):
-        days = 0
         print(f"{self.name}, на нас напали!")
+        while self.total_enemies > 0:
+            time.sleep(1)  # Имитация 1 дня сражения
+            self.days += 1
+            self.total_enemies -= self.power
+            if self.total_enemies < 0:
+                self.total_enemies = 0
+            print(f"{self.name}, сражается {self.days} день(дня)..., осталось {self.total_enemies} воинов.")
 
-        while Knight.total_enemies > 0:
-            days += 1
-            Knight.total_enemies -= self.power
-            print(f"{self.name}, сражается {days} день(дня)..., осталось {Knight.total_enemies} воинов.")
-            time.sleep(1)  # Имитация одного дня сражения
-
-        print(f"{self.name} одержал победу спустя {days} дней(дня)!")
+        print(f"{self.name} одержал победу спустя {self.days} дней(дня)!")
 
 
 # Создание рыцарей
