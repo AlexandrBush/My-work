@@ -13,8 +13,6 @@ class Bank:
             with self.lock:
                 self.balance += amount
                 print(f"Пополнение: {amount}. Баланс: {self.balance}")
-                if self.balance >= 500 and self.lock.locked():
-                    self.lock.release()
             time.sleep(0.001)
 
     def take(self):
@@ -27,7 +25,7 @@ class Bank:
                     print(f"Снятие: {amount}. Баланс: {self.balance}")
                 else:
                     print("Запрос отклонён, недостаточно средств")
-                    self.lock.acquire()
+            time.sleep(0.001)
 
 bk = Bank()
 
