@@ -5,11 +5,17 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils import executor
 
 # Инициализация бота и диспетчера
-API_TOKEN = '###'
+API_TOKEN = '8162981162:AAFgTWjJqbVBoRe-Sm2Uxask-KDr8_BhCrc'
 bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
+# Создание клавиатур
+start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+start_keyboard.add(types.KeyboardButton('Рассчитать'), types.KeyboardButton('Информация'))
+
+gender_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+gender_keyboard.add("Мужской", "Женский")
 
 # Определение группы состояний
 class UserState(StatesGroup):
@@ -22,17 +28,13 @@ class UserState(StatesGroup):
 # Функция для начала цепочки
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(types.KeyboardButton('Рассчитать'), types.KeyboardButton('Информация'))
-    await message.answer('Выберите действие:', reply_markup=keyboard)
+    await message.answer('Выберите действие:', reply_markup=start_keyboard)
 
 
 # Функция для обработки нажатия на кнопку "Рассчитать"
 @dp.message_handler(lambda message: message.text == 'Рассчитать')
 async def set_gender(message: types.Message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add("Мужской", "Женский")
-    await message.answer('Выберите пол:', reply_markup=keyboard)
+    await message.answer('Выберите пол:', reply_markup=gender_keyboard)
     await UserState.gender.set()
 
 
