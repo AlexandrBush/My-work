@@ -8,7 +8,7 @@ from aiogram.utils import executor
 from crud_functions import initiate_db, get_all_products, add_user, is_included
 
 # Инициализация бота и диспетчера
-API_TOKEN = '8162981162:AAFgTWjJqbVBoRe-Sm2Uxask-KDr8_BhCrc'
+API_TOKEN = '###'
 bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
