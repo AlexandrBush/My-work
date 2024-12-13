@@ -27,9 +27,13 @@ delete запрос по маршруту '/user/{user_id}', который уд
 "1": "Имя: UrbanProfi, возраст: 28",
 "3": "Имя: NewUser, возраст: 22"
 }
+
+Примечания:
+Не забудьте написать валидацию для каждого запроса, аналогично предыдущему заданию.
 '''
 
 from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, constr, conint
 
 app = FastAPI()
 
@@ -37,6 +41,11 @@ app = FastAPI()
 users = {
     '1': 'Имя: Example, возраст: 18'
 }
+
+# Модель данных для пользователя
+class User(BaseModel):
+    username: constr(min_length=1)  # Имя пользователя должно быть не пустым
+    age: conint(ge=0)  # Возраст должен быть неотрицательным целым числом
 
 # GET запрос для получения всех пользователей
 @app.get('/users')
@@ -46,10 +55,13 @@ def get_users():
 # POST запрос для добавления нового пользователя
 @app.post('/user/{username}/{age}')
 def add_user(username: str, age: int):
+    # Валидация данных
+    user = User(username=username, age=age)
+
     # Находим максимальный ключ
     max_id = max(map(int, users.keys()), default=0)
     new_id = str(max_id + 1)
-    users[new_id] = f"Имя: {username}, возраст: {age}"
+    users[new_id] = f"Имя: {user.username}, возраст: {user.age}"
     return {"message": f"User {new_id} is registered"}
 
 # PUT запрос для обновления данных пользователя
@@ -57,7 +69,11 @@ def add_user(username: str, age: int):
 def update_user(user_id: str, username: str, age: int):
     if user_id not in users:
         raise HTTPException(status_code=404, detail="User not found")
-    users[user_id] = f"Имя: {username}, возраст: {age}"
+
+    # Валидация данных
+    user = User(username=username, age=age)
+
+    users[user_id] = f"Имя: {user.username}, возраст: {user.age}"
     return {"message": f"User {user_id} has been updated"}
 
 # DELETE запрос для удаления пользователя
