@@ -140,8 +140,3 @@ def delete_user(user_id: int):
 
     # Если пользователь не найден
     raise HTTPException(status_code=404, detail="User was not found")
-
-            return user
-
-    # Если пользователь не найден
-    raise HTTPException(status_code=404, detail="User was not found")
