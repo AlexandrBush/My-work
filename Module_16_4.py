@@ -45,7 +45,7 @@ delete запрос по маршруту '/user/{user_id}', теперь:
 '''
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, constr, conint
-from typing import List
+from typing import List, Annotated
 
 app = FastAPI()
 
@@ -58,32 +58,10 @@ class User(BaseModel):
 # Пустой список пользователей
 users: List[User] = []
 
-# Валидация для user_id
-def validate_user_id(user_id: int):
-    if not isinstance(user_id, int) or user_id < 1 or user_id > 100:
-        raise HTTPException(
-            status_code=400,
-            detail="Enter User ID. It must be an integer between 1 and 100."
-        )
-    return user_id
-
-# Валидация для username
-def validate_username(username: str):
-    if not username or not isinstance(username, str) or len(username) < 1:
-        raise HTTPException(
-            status_code=400,
-            detail="Enter a valid username. It must be a non-empty string."
-        )
-    return username
-
-# Валидация для age
-def validate_age(age: int):
-    if not isinstance(age, int) or age <= 0 or age > 120:
-        raise HTTPException(
-            status_code=400,
-            detail="Enter a valid age. It must be a positive integer between 1 and 120."
-        )
-    return age
+# Аннотации для валидации входных параметров
+User_ID = Annotated[int, conint(ge=1, le=100)]  # user_id должен быть целым числом от 1 до 100
+Username = Annotated[str, constr(min_length=1)]  # username должен быть непустой строкой
+Age = Annotated[int, conint(gt=0, le=120)]  # age должен быть целым числом от 1 до 120
 
 # GET запрос для получения всех пользователей
 @app.get('/users', response_model=List[User])
@@ -92,11 +70,7 @@ def get_users():
 
 # POST запрос для добавления нового пользователя
 @app.post('/user/{username}/{age}', response_model=User)
-def add_user(username: str, age: int):
-    # Валидация входных данных
-    username = validate_username(username)
-    age = validate_age(age)
-
+def add_user(username: Username, age: Age):
     # Определяем id нового пользователя
     if not users:
         new_id = 1
@@ -110,12 +84,7 @@ def add_user(username: str, age: int):
 
 # PUT запрос для обновления данных пользователя
 @app.put('/user/{user_id}/{username}/{age}', response_model=User)
-def update_user(user_id: int, username: str, age: int):
-    # Валидация входных данных
-    user_id = validate_user_id(user_id)
-    username = validate_username(username)
-    age = validate_age(age)
-
+def update_user(user_id: User_ID, username: Username, age: Age):
     # Ищем пользователя по id
     for user in users:
         if user.id == user_id:
@@ -128,10 +97,7 @@ def update_user(user_id: int, username: str, age: int):
 
 # DELETE запрос для удаления пользователя
 @app.delete('/user/{user_id}', response_model=User)
-def delete_user(user_id: int):
-    # Валидация входных данных
-    user_id = validate_user_id(user_id)
-
+def delete_user(user_id: User_ID):
     # Ищем пользователя по id
     for user in users:
         if user.id == user_id:
