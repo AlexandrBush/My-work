@@ -43,8 +43,8 @@ delete запрос по маршруту '/user/{user_id}', теперь:
 
 
 '''
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, constr, conint
+from fastapi import FastAPI, HTTPException, Path
+from pydantic import BaseModel, Field
 from typing import List, Annotated
 
 app = FastAPI()
@@ -52,25 +52,50 @@ app = FastAPI()
 # Модель пользователя
 class User(BaseModel):
     id: int
-    username: constr(min_length=1)  # Имя пользователя должно быть непустой строкой
-    age: conint(gt=0, le=120)  # Возраст должен быть положительным числом и не превышать 120
+    username: str = Field(min_length=1, description="Имя пользователя должно быть непустой строкой")
+    age: int = Field(gt=0, le=120, description="Возраст должен быть положительным числом и не превышать 120")
 
 # Пустой список пользователей
 users: List[User] = []
-
-# Аннотации для валидации входных параметров
-User_ID = Annotated[int, conint(ge=1, le=100)]  # user_id должен быть целым числом от 1 до 100
-Username = Annotated[str, constr(min_length=1)]  # username должен быть непустой строкой
-Age = Annotated[int, conint(gt=0, le=120)]  # age должен быть целым числом от 1 до 120
 
 # GET запрос для получения всех пользователей
 @app.get('/users', response_model=List[User])
 def get_users():
     return users
 
+# GET запрос для получения пользователя по ID
+@app.get("/user/{user_id}")
+def read_user(
+    user_id: Annotated[int, Path(ge=1, le=100, description="Enter User ID", example=45)]
+):
+    # Ищем пользователя по ID
+    for user in users:
+        if user.id == user_id:
+            return user
+
+    # Если пользователь не найден
+    raise HTTPException(status_code=404, detail="User was not found")
+
+# GET запрос для получения пользователя по username и age
+@app.get("/user/{username}/{age}")
+def read_user_info(
+    username: Annotated[str, Path(min_length=5, max_length=20, description="Enter username", example="Nastya")],
+    age: Annotated[int, Path(ge=18, le=120, description="Enter age", example=45)]
+):
+    # Ищем пользователя по username и age
+    for user in users:
+        if user.username == username and user.age == age:
+            return user
+
+    # Если пользователь не найден
+    raise HTTPException(status_code=404, detail="User was not found")
+
 # POST запрос для добавления нового пользователя
 @app.post('/user/{username}/{age}', response_model=User)
-def add_user(username: Username, age: Age):
+def add_user(
+    username: Annotated[str, Path(min_length=1, description="Username must be at least 1 character long")],
+    age: Annotated[int, Path(gt=0, le=120, description="Age must be between 1 and 120")]
+):
     # Определяем id нового пользователя
     if not users:
         new_id = 1
@@ -84,7 +109,11 @@ def add_user(username: Username, age: Age):
 
 # PUT запрос для обновления данных пользователя
 @app.put('/user/{user_id}/{username}/{age}', response_model=User)
-def update_user(user_id: User_ID, username: Username, age: Age):
+def update_user(
+    user_id: Annotated[int, Path(ge=1, le=100, description="User ID must be between 1 and 100")],
+    username: Annotated[str, Path(min_length=1, description="Username must be at least 1 character long")],
+    age: Annotated[int, Path(gt=0, le=120, description="Age must be between 1 and 120")]
+):
     # Ищем пользователя по id
     for user in users:
         if user.id == user_id:
@@ -97,7 +126,9 @@ def update_user(user_id: User_ID, username: Username, age: Age):
 
 # DELETE запрос для удаления пользователя
 @app.delete('/user/{user_id}', response_model=User)
-def delete_user(user_id: User_ID):
+def delete_user(
+    user_id: Annotated[int, Path(ge=1, le=100, description="User ID must be between 1 and 100")]
+):
     # Ищем пользователя по id
     for user in users:
         if user.id == user_id:
