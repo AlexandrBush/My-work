@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('task3.urls')),
+    path('admin/', admin.site.urls),  # Админка Django
+    path('platform/', include('task4.urls')),  # Маршруты для приложения task4
 ]
