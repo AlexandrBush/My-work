@@ -1,0 +1,18 @@
+Date: Wed, 19 Feb 2025 16:53:00 GMT
+Content-Type: text/html; charset=utf-8
+Set-Cookie: i18n_redirected=ru; Max-Age=31536000; Path=/; SameSite=Lax
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=15552000; includeSubDomains; preload
+Content-Security-Policy: default-src https: blob:; connect-src https: wss: blob:; font-src https: data:; frame-src https:; frame-ancestors https:; img-src https: data: blob:; media-src https: blob:; object-src https: blob:; script-src 'unsafe-inline' 'unsafe-eval' https: blob:; style-src 'unsafe-inline' https:;
+Referrer-Policy: strict-origin
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 1; mode block
+Cf-Cache-Status: DYNAMIC
+Server-Timing: cfCacheStatus;desc="DYNAMIC"
+Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT
+Access-Control-Allow-Headers: Content-Type
+Server: cloudflare
+Cf-Ray: 9147c5327c2fd369-FRA
+Content-Encoding: gzip
+Alt-Svc: h3=":443"; ma=86400

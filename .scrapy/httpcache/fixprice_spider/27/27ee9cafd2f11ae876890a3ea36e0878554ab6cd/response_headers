@@ -1,0 +1,19 @@
+Date: Wed, 19 Feb 2025 16:49:09 GMT
+Content-Type: text/html; charset=utf-8
+Set-Cookie: i18n_redirected=ru; Max-Age=31536000; Path=/; SameSite=Lax
+Set-Cookie: _cfuvid=QqnROQM7A4wO3Lp_gXiSzjutannGUdWit7byWZiJwvo-1739983749397-0.0.1.1-604800000; path=/; domain=.fix-price.com; HttpOnly
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=15552000; includeSubDomains; preload
+Content-Security-Policy: default-src https: blob:; connect-src https: wss: blob:; font-src https: data:; frame-src https:; frame-ancestors https:; img-src https: data: blob:; media-src https: blob:; object-src https: blob:; script-src 'unsafe-inline' 'unsafe-eval' https: blob:; style-src 'unsafe-inline' https:;
+Referrer-Policy: strict-origin
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 1; mode block
+Cf-Cache-Status: DYNAMIC
+Server-Timing: cfCacheStatus;desc="DYNAMIC"
+Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT
+Access-Control-Allow-Headers: Content-Type
+Server: cloudflare
+Cf-Ray: 9147bf9afe823266-VIE
+Content-Encoding: gzip
+Alt-Svc: h3=":443"; ma=86400
